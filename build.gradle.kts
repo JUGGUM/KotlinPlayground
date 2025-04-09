@@ -31,6 +31,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("com.h2database:h2")
+    implementation ("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.kafka:spring-kafka")
     //implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter:0.8.0") // 최신 버전 확인 필요
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")

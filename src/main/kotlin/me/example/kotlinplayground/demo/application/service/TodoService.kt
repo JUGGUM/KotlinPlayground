@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service
 class TodoService(private val todoRepository: TodoRepository,
     private val kafkaProducer: TodoKafkaProducer) {
 
-    fun getAllTodos(): List<TodoResponse> =
-        todoRepository.findAll().map { TodoResponse(it.id, it.title, it.done) }
+    fun getTodo(id: Long): TodoResponse {
+        val todo = todoRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Todo not found") }
+        return TodoResponse(todo.id, todo.title, todo.done)
+    }
 
     fun createTodo(request: TodoRequest): TodoResponse {
         val saved = todoRepository.save(Todo(title = request.title, done = request.done))
@@ -23,19 +26,31 @@ class TodoService(private val todoRepository: TodoRepository,
         return TodoResponse(saved.id, saved.title, saved.done)
     }
 
-    fun updateTodo(id: Long, request: TodoRequest): TodoResponse {
-        val todo = todoRepository.findById(id).orElseThrow { NoSuchElementException("Todo not found") }
-        todo.title = request.title
-        todo.done = request.done
-        val updated = todoRepository.save(todo)
+    fun updateTodo(id: Long, title: String, done: Boolean): TodoResponse {
+        val todo = todoRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Todo not found") }
+        todo.title = title
+        todo.done = done
 
         // Kafka 메시지 발행
-        kafkaProducer.sendMessage("todo-events", "Updated TODO: ${updated.id}, ${updated.title}")
+        // kafkaProducer.sendMessage("todo-events", "Updated TODO: ${updated.id}, ${updated.title}")
 
+        val updated = todoRepository.save(todo)
         return TodoResponse(updated.id, updated.title, updated.done)
     }
 
-    fun deleteTodo(id: Long) {
-        todoRepository.deleteById(id)
+    fun createTodo(title: String): TodoResponse {
+        val newTodo = Todo(title = title, done = false)
+        val saved = todoRepository.save(newTodo)
+        return TodoResponse(saved.id, saved.title, saved.done)
+    }
+
+    fun deleteTodo(id: Long): Boolean {
+        return if (todoRepository.existsById(id)) {
+            todoRepository.deleteById(id)
+            true
+        } else {
+            false
+        }
     }
 }

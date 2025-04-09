@@ -1,4 +1,4 @@
-package me.example.kotlinplayground.demo.infrastructure.config
+package me.example.kotlinplayground.demo.config.config
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI

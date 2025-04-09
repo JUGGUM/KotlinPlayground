@@ -10,19 +10,9 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/todos")
 class TodoController(private val todoService: TodoService) {
 
-    @GetMapping
-    fun getAll(): List<TodoResponse> = todoService.getAllTodos()
-
     @PostMapping
     fun create(@RequestBody request: TodoRequest): ResponseEntity<TodoResponse> {
         return ResponseEntity.ok(todoService.createTodo(request))
-    }
-
-    @PutMapping("/{id}")
-    fun update(
-        @PathVariable id: Long, @RequestBody request: TodoRequest
-    ): ResponseEntity<TodoResponse> {
-        return ResponseEntity.ok(todoService.updateTodo(id, request))
     }
 
     @DeleteMapping("/{id}")

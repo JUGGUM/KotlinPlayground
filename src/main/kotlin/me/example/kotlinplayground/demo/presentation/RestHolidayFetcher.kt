@@ -13,7 +13,7 @@ import org.w3c.dom.Element
 fun main() {
     val serviceKey =
         "Pke8zh3ass2GAdZYmNXww1%2ByIp5%2FHgtUUbuL1pNB6jU%2FOvyC0bsazMrIZFZqE0PMO7gFMXCxgFIt5bkrkzX7EA%3D%3D"
-    val solYear = "2025"
+    val solYear = "2026"
     val solMonth = "06"
 
     val urlBuilder =

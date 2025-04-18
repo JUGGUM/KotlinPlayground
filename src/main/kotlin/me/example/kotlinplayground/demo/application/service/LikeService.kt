@@ -10,7 +10,7 @@ class LikeService(
 
     // 예: "like:postId" 키 아래에 사용자 ID를 저장
     fun like(postId: Long, userId: Long): Boolean {
-        val key = "like:$postId"
+        val key = "like:$postId" // java의 final
         val hasLiked = redisTemplate.opsForSet().isMember(key, userId.toString())
 
         return if (hasLiked == true) {
